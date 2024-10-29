@@ -1,0 +1,6 @@
+(pick o3)
+(place o3 r02)
+(pick o1)
+(place o1 r02)
+(pick o1)
+; cost = 500 (general cost)
