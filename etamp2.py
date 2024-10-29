@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     scene_class=Scene_Panda
     
-    scene = scene_class(gui=0)
+    scene = scene_class(gui=1)
     solutions = etamp(
         path_domain,
         path_problem,

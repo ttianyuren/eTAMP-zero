@@ -3,14 +3,15 @@
 ## Todo
 
 
-- [ ] simplify task cook pddl, run symk on it
-- [ ] check planner in ISAAC
+- [ ] add target manipulation env with robot
+- [ ] automate problem.pddl generation
+
 
 
 
 ## To start
 
-1. `git clone --recurse-submodules git@github.com:ttianyuren/etamp_testbench.git`: to clone this repo with submodules
+1. `git clone --recurse-submodules git@github.com:ttianyuren/eTAMP-zero.git`: to clone this repo with submodules
 2. `sudo apt-get -y install cmake g++ make python3 autoconf automake`: to install dependencies for symk
 3. `/symk/build.py `: to build the [symk](symk) planner
 
