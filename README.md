@@ -9,7 +9,7 @@
 
 
 
-## To start
+## Installation
 
 1. `git clone --recurse-submodules git@github.com:ttianyuren/eTAMP-zero.git`: to clone this repo with submodules
 1. `pip install -r requirements.txt`
