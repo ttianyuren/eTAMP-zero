@@ -15,7 +15,7 @@ Follow the steps below to explore symbolic planning concepts and experiment with
 
    Here’s a simple example to illustrate:
 
-   ### PDDL Example: Robot Block Stacking Problem
+   ### PDDL Example: Robot Pick-place Problem
    Imagine a robot tasked with moving a given object (`o3`) to a specific region (`r02`). The robot can only manipulate one block at a time.
 
      ![](figures/topk_example.png)
