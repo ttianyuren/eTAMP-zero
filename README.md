@@ -8,7 +8,7 @@
 
 
 
-
+---
 ## Installation
 
 1. `git clone --recurse-submodules git@github.com:ttianyuren/eTAMP-zero.git`: to clone this repo with submodules
@@ -19,7 +19,7 @@
 or later `git submodule update --init`
 
 
-
+---
 ## Run examples
 
 ```
@@ -31,6 +31,9 @@ or later `git submodule update --init`
 
 
 ![](figures/place_on_diff_surf3_smooth.gif)
+
+---
+## [Learn eTAMP and Symbolic Planning](onboarding.md)
 
 
 ## References
