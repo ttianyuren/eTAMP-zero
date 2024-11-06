@@ -43,7 +43,7 @@ Follow the steps below to explore symbolic planning concepts and experiment with
           :precondition (and (handempty)  ; the robot hand must be empty
                             (graspable ?o) ; Object ?o must be graspable
                             (not (attached ?o)) ; Object ?o should not already be held by the robot
-                            (not (occupied ?o)) ; Object ?o should not occupy another location
+                            (not (occupied ?o)) ; Object ?o should not be occupied
                             )
           :effect (and (not (handempty))    ; the robot’s hand is no longer empty
                       (attached ?o)        ; Object ?o is now attached to the robot (held)
