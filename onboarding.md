@@ -6,15 +6,65 @@ Follow the steps below to explore symbolic planning concepts and experiment with
 
 ---
 
-## Step 1: Explore the Basics of Symbolic Planning
-
 1. **Learn What Symbolic Planning Is**:
-   - Symbolic planning is a process where high-level actions are sequenced to achieve a goal based on logical rules and relationships.
-   - The **Planning Domain Definition Language (PDDL)** is commonly used to define the actions, objects, and rules in symbolic planning problems. eTAMP relies on **PDDL 2.2 or later**, which includes support for derived predicates, action costs, and equality.
+   - Symbolic planning is the process of generating a sequence of high-level actions (like "pick," "move," or "stack") that, when performed in order, achieve a specific goal. This sequence of actions is generated based on rules, constraints, and relationships between objects defined in a formal language.
+   - The **Planning Domain Definition Language (PDDL)** is the standard language for defining planning problems in symbolic AI. PDDL separates the planning "domain" (all possible actions and object types) from the "problem" (specific objects and goals for a scenario).
+
+   Here’s a simple example to illustrate:
+
+   ### PDDL Example: Robot Block Stacking Problem
+   Imagine a robot tasked with stacking three blocks (`A`, `B`, and `C`) in a particular order. The robot can only move one block at a time and must ensure the following goal state: `A` on `B`, and `B` on `C`.
+
+   - **Domain File (`domain.pddl`)**:
+     ```lisp
+     (define (domain block-stacking)
+       (:predicates (on ?x ?y) (clear ?x) (holding ?x) (table ?x))
+       
+       (:action pick-up
+         :parameters (?x)
+         :precondition (and (clear ?x) (table ?x))
+         :effect (and (holding ?x) (not (clear ?x)) (not (table ?x))))
+       
+       (:action put-down
+         :parameters (?x)
+         :precondition (holding ?x)
+         :effect (and (clear ?x) (table ?x) (not (holding ?x))))
+       
+       (:action stack
+         :parameters (?x ?y)
+         :precondition (and (holding ?x) (clear ?y))
+         :effect (and (on ?x ?y) (clear ?x) (not (holding ?x)) (not (clear ?y))))
+       
+       (:action unstack
+         :parameters (?x ?y)
+         :precondition (on ?x ?y)
+         :effect (and (clear ?y) (holding ?x) (not (on ?x ?y)) (not (clear ?x))))
+     )
+     ```
+
+   - **Problem File (`problem.pddl`)**:
+     ```lisp
+     (define (problem stack-problem)
+       (:domain block-stacking)
+       (:objects A B C)
+       
+       (:init (clear A) (clear B) (clear C)
+              (table A) (table B) (table C))
+       
+       (:goal (and (on A B) (on B C)))
+     )
+     ```
+
+   - **Explanation**:
+     - **Domain File**: Defines actions such as `pick-up`, `put-down`, `stack`, and `unstack` with their preconditions (what must be true to perform the action) and effects (how the state changes after the action).
+     - **Problem File**: Defines the initial setup and the goal conditions. Here, the initial state is that all blocks (`A`, `B`, `C`) are on the table and clear, while the goal is to stack them in the order `A` on `B`, and `B` on `C`.
+
+   - **Result**:
+     - A planner can take these files and produce a sequence of actions (e.g., `pick-up A`, `stack A B`, etc.) that achieves the goal state from the initial state.
 
 2. **Watch an Introductory Tutorial**:
    - To start, watch this tutorial series on symbolic planning fundamentals: [AI Planning Video Tutorial](https://www.youtube.com/watch?v=7Vy8970q0Xc&list=PLwJ2VKmefmxpUJEGB1ff6yUZ5Zd7Gegn2).
-   - This provides a gentle introduction to planning concepts and will help you understand the structure and logic of PDDL files used in eTAMP.
+   - This will provide a gentle introduction to planning concepts and help you understand the structure and logic of PDDL files used in eTAMP.
 
 ---
 
