@@ -6,39 +6,53 @@ Follow the steps below to explore symbolic planning concepts and experiment with
 
 ---
 
+
+markdown
+Copy code
+## Step 1: Explore the Basics of Symbolic Planning
+
 1. **Learn What Symbolic Planning Is**:
-   - Symbolic planning is the process of generating a sequence of high-level actions (like "pick," "move," or "stack") that, when performed in order, achieve a specific goal. This sequence of actions is generated based on rules, constraints, and relationships between objects defined in a formal language.
-   - The **Planning Domain Definition Language (PDDL)** is the standard language for defining planning problems in symbolic AI. PDDL separates the planning "domain" (all possible actions and object types) from the "problem" (specific objects and goals for a scenario).
+   - Symbolic planning is the process of generating a sequence of high-level actions, like "pick," "move," or "stack," to achieve a specific goal based on a set of defined rules, constraints, and relationships between objects.
+   - The **Planning Domain Definition Language (PDDL)** is a standardized language for defining planning problems in symbolic AI. PDDL separates the "domain" (all possible actions and object types) from the "problem" (specific objects, initial conditions, and goals for a scenario).
 
    Here’s a simple example to illustrate:
 
    ### PDDL Example: Robot Block Stacking Problem
-   Imagine a robot tasked with stacking three blocks (`A`, `B`, and `C`) in a particular order. The robot can only move one block at a time and must ensure the following goal state: `A` on `B`, and `B` on `C`.
+   Imagine a robot tasked with stacking three blocks (`A`, `B`, and `C`) in a specific order. The robot can only manipulate one block at a time and needs to achieve the following goal: stack `A` on `B`, and `B` on `C`.
 
    - **Domain File (`domain.pddl`)**:
      ```lisp
      (define (domain block-stacking)
-       (:predicates (on ?x ?y) (clear ?x) (holding ?x) (table ?x))
+       (:predicates
+         (on ?x ?y)         ; Block ?x is on block ?y
+         (clear ?x)         ; Block ?x has nothing on top of it
+         (holding ?x)       ; The robot is holding block ?x
+         (table ?x)         ; Block ?x is on the table
+       )
        
-       (:action pick-up
+       (:action pick-up       ; Picks up a block ?x that is clear and on the table
          :parameters (?x)
          :precondition (and (clear ?x) (table ?x))
-         :effect (and (holding ?x) (not (clear ?x)) (not (table ?x))))
+         :effect (and (holding ?x) (not (clear ?x)) (not (table ?x)))
+       )
        
-       (:action put-down
+       (:action put-down      ; Puts down a held block ?x on the table
          :parameters (?x)
          :precondition (holding ?x)
-         :effect (and (clear ?x) (table ?x) (not (holding ?x))))
+         :effect (and (clear ?x) (table ?x) (not (holding ?x)))
+       )
        
-       (:action stack
+       (:action stack         ; Stacks a held block ?x on top of another clear block ?y
          :parameters (?x ?y)
          :precondition (and (holding ?x) (clear ?y))
-         :effect (and (on ?x ?y) (clear ?x) (not (holding ?x)) (not (clear ?y))))
+         :effect (and (on ?x ?y) (clear ?x) (not (holding ?x)) (not (clear ?y)))
+       )
        
-       (:action unstack
+       (:action unstack       ; Unstacks a clear block ?x from another block ?y
          :parameters (?x ?y)
-         :precondition (on ?x ?y)
-         :effect (and (clear ?y) (holding ?x) (not (on ?x ?y)) (not (clear ?x))))
+         :precondition (and (on ?x ?y) (clear ?x))
+         :effect (and (holding ?x) (clear ?y) (not (on ?x ?y)) (not (clear ?x)))
+       )
      )
      ```
 
@@ -55,15 +69,22 @@ Follow the steps below to explore symbolic planning concepts and experiment with
      )
      ```
 
-   - **Explanation**:
-     - **Domain File**: Defines actions such as `pick-up`, `put-down`, `stack`, and `unstack` with their preconditions (what must be true to perform the action) and effects (how the state changes after the action).
-     - **Problem File**: Defines the initial setup and the goal conditions. Here, the initial state is that all blocks (`A`, `B`, `C`) are on the table and clear, while the goal is to stack them in the order `A` on `B`, and `B` on `C`.
+   - **Inputs of a planning task**:
+     - **Domain File**: Defines the types of actions (`pick-up`, `put-down`, `stack`, and `unstack`) that the planner can use to reach the goal. Each action has **preconditions** (requirements for performing the action) and **effects** (how the state changes after the action).
+     - **Problem File**: Describes the initial conditions and the goal. In this setup, all blocks (`A`, `B`, and `C`) are on the table and clear, while the goal is to have `A` stacked on `B` and `B` stacked on `C`.
 
-   - **Result**:
-     - A planner can take these files and produce a sequence of actions (e.g., `pick-up A`, `stack A B`, etc.) that achieves the goal state from the initial state.
+   - **Example Plan Generated by a Planner**:
+     Given the domain and problem files above, a symbolic planner might generate the following sequence of actions to achieve the goal:
+
+     ```
+     1. pick-up B
+     2. stack A C
+     3. pick-up A
+     4. stack B B
+     ```
 
 2. **Watch an Introductory Tutorial**:
-   - To start, watch this tutorial series on symbolic planning fundamentals: [AI Planning Video Tutorial](https://www.youtube.com/watch?v=7Vy8970q0Xc&list=PLwJ2VKmefmxpUJEGB1ff6yUZ5Zd7Gegn2).
+   - To get a deeper understanding, watch this tutorial series on symbolic planning fundamentals: [AI Planning Video Tutorial](https://www.youtube.com/watch?v=7Vy8970q0Xc&list=PLwJ2VKmefmxpUJEGB1ff6yUZ5Zd7Gegn2).
    - This will provide a gentle introduction to planning concepts and help you understand the structure and logic of PDDL files used in eTAMP.
 
 ---
